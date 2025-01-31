@@ -16,11 +16,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create a new list item
         const listItem = document.createElement("li");
         listItem.textContent = taskText;
+        listItem.classList.add("task-item");
 
         // Create a remove button
         const removeButton = document.createElement("button");
         removeButton.textContent = "Remove";
-        removeButton.className = "remove-btn";
+        removeButton.classList.add("remove-btn");
         
         // Assign onclick event to remove button
         removeButton.onclick = function () {
@@ -45,3 +46,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+    
