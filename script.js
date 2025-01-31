@@ -4,10 +4,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const taskInput = document.getElementById("task-input");
     const taskList = document.getElementById("task-list");
 
+    // Load tasks from Local Storage
+    function loadTasks() {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        storedTasks.forEach(taskText => addTask(taskText, false));
+    }
+
     // Function to add a task
-    function addTask() {
-        const taskText = taskInput.value.trim();
-        
+    function addTask(taskText = taskInput.value.trim(), save = true) {
         if (taskText === "") {
             alert("Please enter a task.");
             return;
@@ -26,18 +30,33 @@ document.addEventListener("DOMContentLoaded", function () {
         // Assign onclick event to remove button
         removeButton.onclick = function () {
             taskList.removeChild(listItem);
+            removeTask(taskText);
         };
 
         // Append button to list item and list item to task list
         listItem.appendChild(removeButton);
         taskList.appendChild(listItem);
 
+        // Save to Local Storage
+        if (save) {
+            const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            storedTasks.push(taskText);
+            localStorage.setItem('tasks', JSON.stringify(storedTasks));
+        }
+
         // Clear input field
         taskInput.value = "";
     }
 
+    // Function to remove a task from Local Storage
+    function removeTask(taskText) {
+        let storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        storedTasks = storedTasks.filter(task => task !== taskText);
+        localStorage.setItem('tasks', JSON.stringify(storedTasks));
+    }
+
     // Event listener for Add Task button
-    addButton.addEventListener("click", addTask);
+    addButton.addEventListener("click", () => addTask());
 
     // Event listener for Enter key
     taskInput.addEventListener("keypress", function (event) {
@@ -45,6 +64,12 @@ document.addEventListener("DOMContentLoaded", function () {
             addTask();
         }
     });
+
+    // Load tasks when page loads
+    loadTasks();
 });
+
+        
+
 
     
